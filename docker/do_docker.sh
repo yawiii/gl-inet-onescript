@@ -114,7 +114,7 @@ create_and_format_partition() {
 # 配置并启动Docker
 configure_and_start_docker() {
     local new_partition="$1"
-    local usb_mount_point="/mnt/upan_data"
+    local usb_mount_point="/mnt/sda"
     local docker_root="$usb_mount_point/docker"
 
     mkdir -p $docker_root
@@ -148,7 +148,7 @@ install_docker() {
     opkg install luci-i18n-dockerman-zh-cn >/dev/null 2>&1
     opkg install dockerd --force-depends >/dev/null 2>&1
     # 修改 /etc/config/dockerd 文件中的 data_root 配置
-    sed -i "/option data_root/c\	option data_root '/mnt/upan_data/docker/'" /etc/config/dockerd
+    sed -i "/option data_root/c\	option data_root '/mnt/sda/docker/'" /etc/config/dockerd
 }
 
 # 配置 Docker 开机启动
@@ -190,7 +190,7 @@ EOF
     cp /etc/rc.local /etc/rc.local.backup
     # glinet系统重启后的 USB自动挂载点
     SYSTEM_USB_AUTO_MOUNTPOINT="/tmp/mountd/disk1_part1"
-    # 卸载USB自动挂载点 挂载自定义挂载点 /mnt/upan_data
+    # 卸载USB自动挂载点 挂载自定义挂载点 /mnt/sda
     if ! grep -q "umount $SYSTEM_USB_AUTO_MOUNTPOINT" /etc/rc.local; then
         sed -i '/exit 0/d' /etc/rc.local
 
